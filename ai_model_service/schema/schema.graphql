@@ -1,0 +1,12 @@
+type Query {
+    models(id: ID, name: String, platform: String): [Model]
+}
+
+type Model @key(fields: "id"){
+    id: ID!
+    name: String!
+    platform: String!
+    data_type: String!
+    kind: String!
+    url: String!
+}

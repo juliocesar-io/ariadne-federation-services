@@ -1,0 +1,35 @@
+version: '3.7'
+
+services:
+  ai_model_service:
+    container_name: ai_model_service
+    build: ai_model_service/
+    ports:
+      - "8300:8300"
+    volumes:
+      - type: bind
+        source: ./ai_model_service
+        target: /code
+    environment:
+      - FLASK_ENV=development
+  medical_imaging_service:
+    container_name: medical_imaging_service
+    build: medical_imaging_service/
+    ports:
+      - "8301:8301"
+    volumes:
+      - type: bind
+        source: ./medical_imaging_service
+        target: /code
+    environment:
+      - FLASK_ENV=development
+  federated_gateway:
+    depends_on:
+     - ai_model_service
+     - medical_imaging_service
+    image: xmorse/apollo-federation-gateway
+    ports:
+      - "4000:80"
+    environment:
+      URL_0: "http://ai_model_service:8300"
+      URL_1: "http://medical_imaging_service:8301"

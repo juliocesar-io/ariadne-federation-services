@@ -1,0 +1,15 @@
+type Query {
+    medicalImage(id: ID): [MedicalImage]
+}
+
+type Model @key(fields: "id") @extends {
+    id: ID! @external
+    medicalImages: [MedicalImage]
+}
+
+type MedicalImage @key(fields: "id") {
+    id: ID!
+    type: String
+    format: String
+    url: String!
+}
